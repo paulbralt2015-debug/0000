@@ -9,8 +9,8 @@ on:
 jobs:
   build:
     strategy:
+    # Optionnel : macOS retiré pour éviter la file d'attente
       matrix:
-        # Retirez "macos-latest" de cette liste
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
@@ -22,3 +22,13 @@ jobs:
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config Release
+
+    - name: Upload Compiled Binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: ac3_player-${{ matrix.os }}
+        path: |
+          build/ac3_player
+          build/Release/ac3_player.exe
+          build/Debug/ac3_player.exe
+          build/ac3_player.exe
